@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
   try {
@@ -10,21 +9,21 @@ export async function POST(request: Request) {
 
     if (!expectedPassword) {
       return NextResponse.json(
-        { error: 'Сервер не настроен' },
+        { error: 'Сервер не настроен. Добавьте AUTH_PASSWORD в Environment Variables на Vercel.' },
         { status: 500 }
       )
     }
 
     if (password === expectedPassword) {
-      // Создаём токен (простой вариант — хеш пароля)
+      // Создаём токен из пароля
       const authToken = Buffer.from(password).toString('base64')
-      
+
       const response = NextResponse.json({ success: true })
-      
+
       // Устанавливаем куку на 30 дней
       response.cookies.set('auth_token', authToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true, // Только HTTPS для production
         sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 30, // 30 дней
         path: '/',
@@ -38,6 +37,7 @@ export async function POST(request: Request) {
       { status: 401 }
     )
   } catch (error) {
+    console.error('Auth error:', error)
     return NextResponse.json(
       { error: 'Ошибка сервера' },
       { status: 500 }

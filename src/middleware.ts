@@ -7,12 +7,6 @@ const publicPaths = ['/login', '/api/login', '/api/auth', '/api/logout']
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Проверка API endpoints (кроме auth)
-  if (pathname.startsWith('/api/')) {
-    // API всегда доступен (для работы приложения)
-    return NextResponse.next()
-  }
-
   // Публичные страницы
   if (publicPaths.some(path => pathname.startsWith(path))) {
     return NextResponse.next()
@@ -20,18 +14,9 @@ export function middleware(request: NextRequest) {
 
   // Проверка авторизации
   const authToken = request.cookies.get('auth_token')?.value
-  const expectedPassword = process.env.AUTH_PASSWORD
 
-  if (!expectedPassword) {
-    // Если пароль не установлен — пропускаем (режим разработки)
-    return NextResponse.next()
-  }
-
-  // Создаём ожидаемый токен из пароля
-  const expectedToken = Buffer.from(expectedPassword).toString('base64')
-
-  if (!authToken || authToken !== expectedToken) {
-    // Перенаправление на страницу входа
+  // Если куки нет — редирект на login
+  if (!authToken) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
