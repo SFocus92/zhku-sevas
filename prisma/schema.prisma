@@ -6,9 +6,9 @@ generator client {
 }
 
 datasource db {
-  // SQLite для локальной разработки, PostgreSQL для production (Vercel)
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // === ДОМА ===
