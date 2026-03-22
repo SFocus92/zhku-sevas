@@ -9,6 +9,7 @@ import {
   Truck, FileText, Plus, Eye, Loader2, Menu, X
 } from 'lucide-react'
 import Link from 'next/link'
+import { LogoutButton } from '@/components/logout-button'
 
 interface Stats {
   housesCount: number
@@ -37,6 +38,15 @@ export default function HomePage() {
       console.error('Error:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleLogoutMobile = async () => {
+    try {
+      await fetch('/api/logout', { method: 'POST' })
+      window.location.href = '/login'
+    } catch (error) {
+      console.error('Logout error:', error)
     }
   }
 
@@ -88,6 +98,7 @@ export default function HomePage() {
                   <Settings className="w-4 h-4" />
                 </Button>
               </Link>
+              <LogoutButton />
             </nav>
 
             {/* Мобильное меню */}
@@ -123,6 +134,10 @@ export default function HomePage() {
                   Настройки
                 </Button>
               </Link>
+              <Button variant="outline" size="sm" className="w-full justify-start text-red-600" onClick={() => { setMenuOpen(false); handleLogoutMobile() }}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Выйти
+              </Button>
             </nav>
           )}
         </div>

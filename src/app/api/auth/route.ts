@@ -1,0 +1,46 @@
+import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const { password } = body
+
+    const expectedPassword = process.env.AUTH_PASSWORD
+
+    if (!expectedPassword) {
+      return NextResponse.json(
+        { error: 'Сервер не настроен' },
+        { status: 500 }
+      )
+    }
+
+    if (password === expectedPassword) {
+      // Создаём токен (простой вариант — хеш пароля)
+      const authToken = Buffer.from(password).toString('base64')
+      
+      const response = NextResponse.json({ success: true })
+      
+      // Устанавливаем куку на 30 дней
+      response.cookies.set('auth_token', authToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30, // 30 дней
+        path: '/',
+      })
+
+      return response
+    }
+
+    return NextResponse.json(
+      { error: 'Неверный пароль' },
+      { status: 401 }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Ошибка сервера' },
+      { status: 500 }
+    )
+  }
+}
