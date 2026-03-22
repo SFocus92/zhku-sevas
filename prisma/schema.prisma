@@ -6,8 +6,13 @@ generator client {
 }
 
 datasource db {
+<<<<<<< HEAD
   provider = "postgresql"
   url      = env("DATABASE_URL")
+=======
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+>>>>>>> 598e879df38a828a35ea1a745a10b22a2ccdb967
   directUrl = env("DIRECT_URL")
 }
 // === ДОМА ===
