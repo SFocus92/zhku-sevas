@@ -1,0 +1,186 @@
+// ЖКУ Севастополь - Система расчёта коммунальных услуг
+// Для частного дома с домиками для сдачи
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // SQLite для локальной разработки, PostgreSQL для production (Vercel)
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// === ДОМА ===
+
+model House {
+  id          String   @id @default(cuid())
+  name        String   // "Основной дом", "Гостевой 1", "Гостевой 2"
+  address     String?
+  isMain      Boolean  @default(false) // true = основной дом владельца
+
+  // Размеры для расчёта объёма (газ распределяется по объёму)
+  length      Float    @default(0)  // Длина в метрах
+  width       Float    @default(0)  // Ширина в метрах
+  height      Float    @default(2.7) // Высота потолков в метрах
+
+  // Счётчики (есть или нет)
+  hasWaterMeter     Boolean @default(false)
+  hasElectricMeter  Boolean @default(false)
+
+  // Статус занятости
+  isOccupied  Boolean  @default(false) // Заселён или свободен
+
+  // Связи
+  meterReadings MeterReading[]
+  billItems     BillItem[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("houses")
+}
+
+// === ПОКАЗАНИЯ СЧЁТЧИКОВ ===
+
+model MeterReading {
+  id          String   @id @default(cuid())
+  houseId     String
+  house       House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
+
+  // Период
+  month       Int      // 1-12
+  year        Int      // 2024, 2025, 2026...
+
+  // Тип счётчика
+  meterType   String   // "water", "electric"
+
+  // Показания
+  previousValue Float @default(0) // Предыдущее показание
+  currentValue  Float @default(0) // Текущее показание
+  consumption   Float @default(0) // Потребление (вычисляется)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([houseId, meterType, month, year])
+  @@map("meter_readings")
+}
+
+// === СЧЕТА И КВИТАНЦИИ ===
+
+model Bill {
+  id          String   @id @default(cuid())
+  
+  // Период
+  month       Int      // 1-12
+  year        Int      // 2024, 2025, 2026...
+  
+  // Тип услуги
+  serviceType String   // "gas", "water", "electric", "sewage", "septic"
+  
+  // Общие данные
+  totalConsumption Float @default(0) // Общее потребление
+  totalAmount      Float @default(0) // Общая сумма
+  
+  // Тариф на момент создания
+  tariffUsed  Float    @default(0)
+  
+  // Статус
+  status      String   @default("created") // created, paid, cancelled
+  
+  // Связи
+  items       BillItem[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([month, year, serviceType])
+  @@map("bills")
+}
+
+model BillItem {
+  id          String   @id @default(cuid())
+  billId      String
+  bill        Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+
+  houseId     String
+  house       House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
+
+  // Расчёт
+  volume      Float    @default(0)  // Объём/площадь для распределения
+  consumption Float    @default(0)  // Потребление
+  daysLived   Int      @default(30) // Дней проживания в месяце
+  share       Float    @default(0)  // Доля (коэффициент)
+
+  // Сумма
+  amount      Float    @default(0)  // Сумма к оплате
+
+  // Статус оплаты
+  isPaid      Boolean  @default(false)
+  paidAt      DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("bill_items")
+}
+
+// === ТАРИФЫ ===
+
+model Tariff {
+  id          String   @id @default(cuid())
+
+  name        String   // Название услуги
+  serviceType String   @unique // "gas", "water", "sewage", "electric_1", "electric_2", "electric_3", "electric_night"
+
+  price       Float    // Цена за единицу
+  unit        String   // "м³", "кВт·ч", "руб" (для фиксированных)
+
+  // Лимиты для электричества
+  limitFrom   Float?   // От какого потребления
+  limitTo     Float?   // До какого потребления
+
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("tariffs")
+}
+
+// === ВЫГРЕБНАЯ ЯМА (АССЕНИЗАЦИЯ) ===
+
+model SepticService {
+  id          String   @id @default(cuid())
+  
+  date        DateTime // Дата вызова
+  cost        Float    // Стоимость вызова
+  volume      Float?   // Объём в м³ (если известно)
+  notes       String?  // Примечания
+  
+  // Распределение
+  splitBetween String? // "all" или конкретные дома
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("septic_services")
+}
+
+// === НАСТРОЙКИ ===
+
+model Settings {
+  id          String   @id @default(cuid())
+  
+  ownerName   String   @default("") // ФИО собственника
+  ownerPhone  String?  // Телефон собственника
+  
+  // Текущий расчётный период
+  currentMonth Int     @default(1)
+  currentYear  Int     @default(2026)
+  
+  updatedAt   DateTime @updatedAt
+  
+  @@map("settings")
+}

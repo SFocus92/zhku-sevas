@@ -1,0 +1,33 @@
+# Игнорируемые файлы для Vercel
+
+# Локальные env
+.env
+.env.local
+.env.development.local
+.env.test.local
+
+# База данных SQLite
+db/*.db
+db/*.db-journal
+
+# Локальные файлы
+*.bat
+*.ps1
+*.md
+
+# Исключения для документации
+!README.md
+!DEPLOY_VERCEL.md
+
+# Dev артефакты
+.next/
+node_modules/
+
+# Логи
+*.log
+server_log.txt
+
+# Прочее
+portable/
+standalone/
+launcher.py

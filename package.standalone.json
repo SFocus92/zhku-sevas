@@ -1,0 +1,22 @@
+{
+  "name": "zhku-sevastopol",
+  "version": "1.0.0",
+  "description": "ЖКУ Севастополь - Система учёта коммунальных услуг",
+  "main": "standalone\\server.js",
+  "author": "Maksim",
+  "license": "MIT",
+  "scripts": {
+    "start": "node standalone\\server.js"
+  },
+  "pkg": {
+    "scripts": "standalone/**/*.js",
+    "assets": [
+      "standalone/**/*",
+      ".next/static/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  }
+}

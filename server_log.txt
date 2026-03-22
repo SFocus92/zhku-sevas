@@ -1,0 +1,19 @@
+
+> zhku-sevastopol@1.0.0 dev
+> next dev -H 0.0.0.0 -p 3000
+
+▲ Next.js 16.1.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://0.0.0.0:3000
+- Environments: .env
+- Experiments (use with caution):
+  · serverActions
+
+✓ Starting...
+✓ Ready in 1221ms
+ GET / 200 in 1152ms (compile: 887ms, render: 266ms)
+ GET /api/init 200 in 174ms (compile: 126ms, render: 48ms)
+ GET /api/stats 200 in 50ms (compile: 34ms, render: 16ms)
+ GET / 200 in 52ms (compile: 4ms, render: 48ms)
+ GET /api/stats 200 in 15ms (compile: 3ms, render: 12ms)
+^C^C

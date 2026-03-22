@@ -1,0 +1,233 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ],
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    }
+  ],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/bills/[id]",
+      "regex": "^/api/bills/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/bills/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/bills/[id]/items/[itemId]",
+      "regex": "^/api/bills/([^/]+?)/items/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPitemId": "nxtPitemId"
+      },
+      "namedRegex": "^/api/bills/(?<nxtPid>[^/]+?)/items/(?<nxtPitemId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/houses/[id]",
+      "regex": "^/api/houses/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/houses/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/meters/[id]",
+      "regex": "^/api/meters/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/meters/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/tariffs/[id]",
+      "regex": "^/api/tariffs/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/tariffs/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/bills/[id]",
+      "regex": "^/bills/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/bills/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api",
+      "regex": "^/api(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api(?:/)?$"
+    },
+    {
+      "page": "/api/bills",
+      "regex": "^/api/bills(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/bills(?:/)?$"
+    },
+    {
+      "page": "/api/calculate",
+      "regex": "^/api/calculate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/calculate(?:/)?$"
+    },
+    {
+      "page": "/api/houses",
+      "regex": "^/api/houses(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/houses(?:/)?$"
+    },
+    {
+      "page": "/api/init",
+      "regex": "^/api/init(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/init(?:/)?$"
+    },
+    {
+      "page": "/api/meters",
+      "regex": "^/api/meters(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/meters(?:/)?$"
+    },
+    {
+      "page": "/api/ocr",
+      "regex": "^/api/ocr(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ocr(?:/)?$"
+    },
+    {
+      "page": "/api/septic",
+      "regex": "^/api/septic(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/septic(?:/)?$"
+    },
+    {
+      "page": "/api/settings",
+      "regex": "^/api/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/settings(?:/)?$"
+    },
+    {
+      "page": "/api/stats",
+      "regex": "^/api/stats(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stats(?:/)?$"
+    },
+    {
+      "page": "/api/tariffs",
+      "regex": "^/api/tariffs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/tariffs(?:/)?$"
+    },
+    {
+      "page": "/bills",
+      "regex": "^/bills(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/bills(?:/)?$"
+    },
+    {
+      "page": "/calculate",
+      "regex": "^/calculate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/calculate(?:/)?$"
+    },
+    {
+      "page": "/houses",
+      "regex": "^/houses(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/houses(?:/)?$"
+    },
+    {
+      "page": "/meters",
+      "regex": "^/meters(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meters(?:/)?$"
+    },
+    {
+      "page": "/septic",
+      "regex": "^/septic(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/septic(?:/)?$"
+    },
+    {
+      "page": "/settings",
+      "regex": "^/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/settings(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
