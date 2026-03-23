@@ -408,7 +408,8 @@ function CalculatePageContent() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Загрузка фото */}
+                {/* Загрузка фото - ОТКЛЮЧЕНО (только ручной ввод) */}
+                {/*
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
                   <input
                     ref={fileInputRef}
@@ -418,7 +419,7 @@ function CalculatePageContent() {
                     onChange={handlePhotoUpload}
                     className="hidden"
                   />
-                  
+
                   {photoPreview ? (
                     <div className="relative">
                       <img src={photoPreview} alt="Preview" className="max-h-40 mx-auto rounded" />
@@ -451,8 +452,8 @@ function CalculatePageContent() {
                       </p>
                     </div>
                   )}
-                  
-                  {/* Результат OCR */}
+
+                  <!-- Результат OCR -->
                   {ocrResult && (
                     <div className={`mt-3 p-3 rounded ${ocrResult.success ? 'bg-green-50' : 'bg-yellow-50'}`}>
                       <div className="flex items-center gap-2 mb-2">
@@ -465,13 +466,13 @@ function CalculatePageContent() {
                           {ocrResult.success ? 'Данные распознаны' : 'Частичное распознавание'}
                         </span>
                       </div>
-                      
+
                       {ocrResult.data?.allNumbers && ocrResult.data.allNumbers.length > 0 && (
                         <p className="text-xs text-gray-600">
                           Найдены числа: {ocrResult.data.allNumbers.slice(0, 5).join(', ')}
                         </p>
                       )}
-                      
+
                       {!ocrResult.data?.totalConsumption && (
                         <p className="text-xs text-gray-500 mt-1">
                           Введите данные вручную
@@ -480,6 +481,7 @@ function CalculatePageContent() {
                     </div>
                   )}
                 </div>
+                */}
 
                 {/* Период */}
                 <div className="grid grid-cols-2 gap-3">
